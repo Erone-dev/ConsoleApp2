@@ -106,7 +106,8 @@ namespace ConsoleApp2
                 }
             };
             string phisRecor = JsonConvert.SerializeObject(phis);
-            File.WriteAllText(FileManager.GetPhisPath(), phisRecor);
+
+            file.WritePhis(phisRecor);
 
             List<YurFace> yur = new List<YurFace>()
             {
@@ -153,6 +154,8 @@ namespace ConsoleApp2
             };
 
             string yurRecord = JsonConvert.SerializeObject(yur);
+            
+
             File.WriteAllText(FileManager.GetYurPath(), yurRecord);
 
             //Сортировка ФИО

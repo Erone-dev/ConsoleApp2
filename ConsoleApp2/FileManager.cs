@@ -1,5 +1,6 @@
 ﻿using ConsoleApp2.Models;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -31,6 +32,11 @@ namespace ConsoleApp2
         {
             List<PhisicalFace> phis = JsonConvert.DeserializeObject<List<PhisicalFace>>(File.ReadAllText(individ));
             return phis;
+        }
+
+        internal void WritePhis(string phisRecor)
+        {
+            File.WriteAllText(individ, phisRecor);
         }
     }
 }
