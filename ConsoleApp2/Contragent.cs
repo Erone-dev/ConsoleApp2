@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using Newtonsoft.Json;
-
-namespace ConsoleApp2
+﻿namespace ConsoleApp2
 {
     public class Contragent
     {
-        public string biin { get; set; }
-        public string create_date { get; set; }
-        public string change_date { get; set; }
-        public string author_create { get; set; }
-        public string author_change { get; set; }
+        public string Biin { get; set; }
+        public string CreateDate { get; set; }
+        public string AuthorCreate { get; set; }
         public long Id { get; set; }
 
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -12,10 +8,10 @@ namespace ConsoleApp2
     internal  class FileManager
     {
 
-        internal static string subdata = @"Test\Subdata.json";
+        //internal static string subdata = @"Test\Subdata.json";
         internal static string entity = @"Test\entity.json";
         internal static string individ = @"Test\individual.json";
-        internal static string files = @"Test\файлы";
+        //internal static string files = @"Test\файлы";
 
 
         //Получение записей
