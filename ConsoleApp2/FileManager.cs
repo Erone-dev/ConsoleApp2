@@ -23,13 +23,15 @@ namespace ConsoleApp2
             return phis;
         }
 
-        internal void WritePhis(string phisRecord)
+        internal void WritePhis(List<PhisicalFace> agent)
         {
+            var phisRecord = JsonConvert.SerializeObject(agent);
             File.WriteAllText(phisPath, phisRecord);
         }
 
-        internal void WriteYur(string yurRecord)
+        internal void WriteYur(List<YurFace> companies)
         {
+            var yurRecord = JsonConvert.SerializeObject(companies);
             File.WriteAllText(yurPath, yurRecord);
         }
     }
