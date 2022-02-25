@@ -1,6 +1,5 @@
 ﻿using ConsoleApp2.Models;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,35 +7,30 @@ namespace ConsoleApp2
 {
     internal class FileManager
     {
-        readonly static string entity = @"entity.json";
-        readonly static string individ = @"individual.json";
-
-        public static string GetPhisPath()
-        {
-            return individ;
-        }
-
-        public static string GetYurPath()
-        {
-            return entity;
-        }
+        readonly static string yurPath = @"entity.json";
+        readonly static string phisPath = @"individual.json";
 
         //Получение записей
         public List<YurFace> GetYur()
         {
-            List<YurFace> yur = JsonConvert.DeserializeObject<List<YurFace>>(File.ReadAllText(entity));
+            var yur = JsonConvert.DeserializeObject<List<YurFace>>(File.ReadAllText(yurPath));
             return yur;
         }
 
         public List<PhisicalFace> GetPhis()
         {
-            List<PhisicalFace> phis = JsonConvert.DeserializeObject<List<PhisicalFace>>(File.ReadAllText(individ));
+            var phis = JsonConvert.DeserializeObject<List<PhisicalFace>>(File.ReadAllText(phisPath));
             return phis;
         }
 
-        internal void WritePhis(string phisRecor)
+        internal void WritePhis(string phisRecord)
         {
-            File.WriteAllText(individ, phisRecor);
+            File.WriteAllText(phisPath, phisRecord);
+        }
+
+        internal void WriteYur(string yurRecord)
+        {
+            File.WriteAllText(yurPath, yurRecord);
         }
     }
 }

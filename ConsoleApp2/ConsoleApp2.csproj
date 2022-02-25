@@ -6,19 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="bin\Debug\net5.0\Test\Subdata.json" />
-    <None Include="bin\Debug\net5.0\Test\entity.json" />
-    <None Include="bin\Debug\net5.0\Test\individual.json" />
-    <None Include="bin\Debug\net5.0\Test\физ.txt" />
-    <None Include="bin\Debug\net5.0\Test\юр.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="bin\Debug\net5.0\Test\файлы\" />
+    <Folder Include="bin\Debug\net5.0\Test\" />
   </ItemGroup>
 
 </Project>

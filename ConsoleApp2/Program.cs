@@ -14,9 +14,9 @@ namespace ConsoleApp2
         {
             file = new FileManager();
 
-            List<PhisicalFace> phis = new List<PhisicalFace>()
+            var phis = new List<PhisicalFace>()
             {
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Кристофор",
                     SecondName = "Пукин",
@@ -27,7 +27,7 @@ namespace ConsoleApp2
                     Id = 1,
                     CompanyId = 0
                 },
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Джон",
                     SecondName = "Кинг",
@@ -38,7 +38,7 @@ namespace ConsoleApp2
                     Id = 2,
                     CompanyId = 0
                 },
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Конг",
                     SecondName = "Кинг",
@@ -49,7 +49,7 @@ namespace ConsoleApp2
                     Id = 3,
                     CompanyId = 1
                 },
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Виктория",
                     SecondName = "Сосиска",
@@ -60,7 +60,7 @@ namespace ConsoleApp2
                     Id = 4,
                     CompanyId = 2
                 },
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Сергей",
                     SecondName = "Лазарев",
@@ -71,7 +71,7 @@ namespace ConsoleApp2
                     Id = 5,
                     CompanyId = 3
                 },
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Барман",
                     SecondName = "Царукян",
@@ -82,7 +82,7 @@ namespace ConsoleApp2
                     Id = 6,
                     CompanyId = 4
                 },
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Арман",
                     SecondName = "Царукян",
@@ -93,7 +93,7 @@ namespace ConsoleApp2
                     Id = 6,
                     CompanyId = 4
                 },
-                new PhisicalFace
+                new ()
                 {
                     FirstName = "Барман",
                     SecondName = "Царукян",
@@ -105,13 +105,12 @@ namespace ConsoleApp2
                     CompanyId = 4
                 }
             };
-            string phisRecor = JsonConvert.SerializeObject(phis);
+            var phisRecord = JsonConvert.SerializeObject(phis);
+            file.WritePhis(phisRecord);
 
-            file.WritePhis(phisRecor);
-
-            List<YurFace> yur = new List<YurFace>()
+            var yur = new List<YurFace>()
             {
-                new YurFace
+                new ()
                 {
                     CorpName = "Jusan Garant",
                     Biin = "123456789012",
@@ -119,7 +118,7 @@ namespace ConsoleApp2
                     AuthorCreate = "Жека",
                     Id = 0
                 },
-                new YurFace
+                new ()
                 {
                     CorpName = "Costa Coffee",
                     Biin = "098765432109",
@@ -127,7 +126,7 @@ namespace ConsoleApp2
                     AuthorCreate = "Жека",
                     Id = 1
                 },
-                new YurFace
+                new ()
                 {
                     CorpName = "Магнолия",
                     Biin = "232323444555",
@@ -135,7 +134,7 @@ namespace ConsoleApp2
                     AuthorCreate = "Жека",
                     Id = 2
                 },
-                new YurFace
+                new ()
                 {
                     CorpName = "Sulpak",
                     Biin = "566778899034",
@@ -143,7 +142,7 @@ namespace ConsoleApp2
                     AuthorCreate = "Жека",
                     Id = 3
                 },
-                new YurFace
+                new ()
                 {
                     CorpName = "TechnoDom",
                     Biin = "897867564534",
@@ -152,11 +151,8 @@ namespace ConsoleApp2
                     Id = 4
                 }
             };
-
-            string yurRecord = JsonConvert.SerializeObject(yur);
-            
-
-            File.WriteAllText(FileManager.GetYurPath(), yurRecord);
+            var yurRecord = JsonConvert.SerializeObject(yur);
+            file.WriteYur(yurRecord);
 
             //Сортировка ФИО
 
@@ -178,7 +174,7 @@ namespace ConsoleApp2
                 .OrderByDescending(x => x.agentsCount)
                 .Take(5);
 
-            string outputEnt;
+            var outputEnt = "";
             foreach (var data in companyData)
             {
                 var agents = file.GetPhis()
@@ -186,11 +182,11 @@ namespace ConsoleApp2
                     .OrderBy(r => r.SecondName)
                     .ThenBy(r => r.FirstName)
                     .ThenBy(r => r.MiddleName);
-                outputEnt = string.Concat(data.NameC, " ", data.Bin, "\n", "Контрагенты:");
-                string contrag = "\n";
+                outputEnt = $"{data.NameC} {data.Bin} \n Контрагенты: ";
+                var contrag = "\n";
                 foreach (var agent in agents)
                 {
-                    contrag = $"{contrag} \t {agent.SecondName} {agent.FirstName} {agent.MiddleName} \n";
+                    contrag = String.Concat(contrag, $"\t {agent.SecondName} {agent.FirstName} {agent.MiddleName} \n");
                 }
                 outputEnt = string.Concat(outputEnt, contrag);
                 Console.WriteLine(outputEnt);
@@ -199,11 +195,14 @@ namespace ConsoleApp2
 
         public static void SortPhis()
         {
-            var personData = file.GetPhis().OrderBy(c => c.SecondName).ThenBy(c => c.FirstName).ThenBy(c => c.MiddleName);
+            var personData = file.GetPhis()
+                .OrderBy(c => c.SecondName)
+                .ThenBy(c => c.FirstName)
+                .ThenBy(c => c.MiddleName);
             var personOutput = "";
             foreach (var pd in personData)
             {
-                personOutput = string.Concat(personOutput, pd.SecondName, " ", pd.FirstName, " ", pd.MiddleName, "\n");
+                personOutput = string.Concat(personOutput, $"{pd.SecondName} {pd.FirstName} {pd.MiddleName} \n");
             }
             Console.WriteLine(personOutput);
         }
