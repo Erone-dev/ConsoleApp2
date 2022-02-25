@@ -5,7 +5,6 @@ using System.IO;
 
 namespace ConsoleApp2
 {
-
     internal class FileManager
     {
         readonly static string entity = @"entity.json";
