@@ -49,7 +49,6 @@ namespace ConsoleApp2
         //        }
         //    }
         //}
-
         //internal static void createYurFile(long faceId)
         //{
         //    string pth = entity;
@@ -84,9 +83,7 @@ namespace ConsoleApp2
         //            throw new Exception("Ошибка! Id не найден");
         //        }
         //    }
-
         //}
-
         //private static void writeDocument(string fileName, string text)
         //{
         //    string path = new StringBuilder(FileManager.files + "\\" + fileName).ToString();
@@ -94,9 +91,7 @@ namespace ConsoleApp2
         //    str.WriteLine(text);
         //    str.Close();
         //}
-
         ////Чтение и вывод в консоль текстовых файлов
-
         //internal static string readDocument(string fileName)
         //{
         //    FileInfo fileInf = new FileInfo(fileName);
@@ -111,9 +106,7 @@ namespace ConsoleApp2
         //    string text = sb.ToString();
         //    return text;
         //}
-
         ////Cоздать новую запись
-
         //internal static void createNewPhisRecord(PhisicalFace obj)
         //{
         //    string pth = individ;
@@ -122,7 +115,6 @@ namespace ConsoleApp2
         //    string json = JsonConvert.SerializeObject(obj);
         //    File.WriteAllText(pth, json);
         //}
-
         //internal static void createNewYurRecord(YurFace obj)
         //{
         //    string pth = entity;
@@ -131,9 +123,7 @@ namespace ConsoleApp2
         //    string json = JsonConvert.SerializeObject(obj);
         //    File.WriteAllText(pth, json);
         //}
-
         ////Для моделей
-
         //internal static long getId(string idName)
         //{
         //    Dictionary<string, dynamic> Id = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(File.ReadAllText(subdata));
@@ -142,24 +132,6 @@ namespace ConsoleApp2
         //    string json = JsonConvert.SerializeObject(Id);
         //    File.WriteAllText(subdata, json);
         //    return IdRes;
-        //}
-
-        //internal static string searchYurData(long id, string key)
-        //{
-        //    List<YurFace> lst = JsonConvert.DeserializeObject<List<YurFace>>(File.ReadAllText(pth));
-        //    return "";
-        //}
-
-        //internal static string searchPhisData(long id, string key)
-        //{
-
-        //    return "";
-        //}
-
-        //private static string search<T>(long id, string key, List<T> lst)
-        //{
-        //    if()
-        //    return "";
         //}
     }
 
