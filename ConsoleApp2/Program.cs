@@ -17,7 +17,7 @@ namespace ConsoleApp2
             {
                 new PhisicalFace
                 {
-                    Name = "Кристофор",
+                    FirstName = "Кристофор",
                     SecondName = "Пукин",
                     MiddleName = "Колумбович",
                     Biin = "999888777666",
@@ -28,7 +28,7 @@ namespace ConsoleApp2
                 },
                 new PhisicalFace
                 {
-                    Name = "Джон",
+                    FirstName = "Джон",
                     SecondName = "Кинг",
                     MiddleName = "Александрович",
                     Biin = "88005553535",
@@ -39,7 +39,7 @@ namespace ConsoleApp2
                 },
                 new PhisicalFace
                 {
-                    Name = "Конг",
+                    FirstName = "Конг",
                     SecondName = "Кинг",
                     MiddleName = "Обезьянович",
                     Biin = "666",
@@ -50,7 +50,7 @@ namespace ConsoleApp2
                 },
                 new PhisicalFace
                 {
-                    Name = "Виктория",
+                    FirstName = "Виктория",
                     SecondName = "Сосиска",
                     MiddleName = "Анатолиевна",
                     Biin = "8888",
@@ -61,7 +61,7 @@ namespace ConsoleApp2
                 },
                 new PhisicalFace
                 {
-                    Name = "Сергей",
+                    FirstName = "Сергей",
                     SecondName = "Лазарев",
                     MiddleName = "Вячеславович",
                     Biin = "999999",
@@ -72,7 +72,7 @@ namespace ConsoleApp2
                 },
                 new PhisicalFace
                 {
-                    Name = "Арман",
+                    FirstName = "Барман",
                     SecondName = "Царукян",
                     MiddleName = "Наирович",
                     Biin = "4444444",
@@ -83,9 +83,20 @@ namespace ConsoleApp2
                 },
                 new PhisicalFace
                 {
-                    Name = "Арманнн",
-                    SecondName = "Царукянннн",
-                    MiddleName = "Наировиччччч",
+                    FirstName = "Арман",
+                    SecondName = "Царукян",
+                    MiddleName = "Наирович",
+                    Biin = "44444446767",
+                    CreateDate = DateTime.Now.ToString(),
+                    AuthorCreate = "Жека",
+                    Id = 6,
+                    CompanyId = 4
+                },
+                new PhisicalFace
+                {
+                    FirstName = "Барман",
+                    SecondName = "Царукян",
+                    MiddleName = "Михайлович",
                     Biin = "44444446767",
                     CreateDate = DateTime.Now.ToString(),
                     AuthorCreate = "Жека",
@@ -141,61 +152,69 @@ namespace ConsoleApp2
                 }
             };
 
-            string json2 = JsonConvert.SerializeObject(ent);
-            File.WriteAllText(FileManager.entity, json2);
+            string entityRecord = JsonConvert.SerializeObject(ent);
+            File.WriteAllText(FileManager.entity, entityRecord);
 
 
 
 
             //Сортировка ФИО
 
+            SortPhis();
 
-            SortPhis("SecondName");
-
-            Console.WriteLine("#\n#\n#");
-
-            SortPhis("Name");
-            
-            Console.WriteLine("#\n#\n#");
-
-            SortPhis("MiddleName");
-
-            Console.WriteLine("#\n#\n#");
-
-
+            Console.WriteLine("#\n#\n#\n");
 
 
             //Компании
 
 
-            var data = file.GetYur().Select(e => new Dictionary<string, dynamic> { { "NameC", e.CorpName }, 
-                { "bin", e.Biin }, { "id", e.Id } }).Take(5).OrderByDescending(e => file.GetPhis().
-                Where(g => g.CompanyId == e["id"]).Select(g => new List<long> {g.Id}).Count());
-            StringBuilder sb3;
-            foreach (var d in data)
+
+            //var companyData = file.GetYur()
+            //    .Select(e => new Dictionary<string, dynamic> { { "NameC", e.CorpName }, { "bin", e.Biin }, { "id", e.Id } })
+            //    .Take(5)
+            //    .OrderByDescending(e => file.GetPhis()
+            //    .Where(g => g.CompanyId == e["id"])
+            //    .Select(g => new List<long> {g.Id})
+            //    .Count());
+
+            var companyData = file.GetYur()
+                .Select(x => new CompanyView() { Id = x.Id, NameC = x.CorpName ,Bin = x.Biin, agentsCount = file.GetPhis()
+                .Where(g => g.CompanyId == x.Id)
+                .Count()})
+                .OrderByDescending(x => x.agentsCount)
+                .Take(5);
+
+
+            string outputEnt;
+            foreach (var data in companyData)
             {
-                var agents = file.GetPhis().Where(r => r.CompanyId == d["id"]).Select(r => new List<string> {r.SecondName, r.Name, r.MiddleName});
-                sb3 = new StringBuilder(d["NameC"] + " " + d["bin"] + "\n");
-                sb3.AppendLine("Контрагенты: ");
-                foreach(var ag in agents)
+                var agents = file.GetPhis()
+                    .Where(r => r.CompanyId == data.Id)
+                    .OrderBy(r => r.SecondName)
+                    .ThenBy(r => r.FirstName)
+                    .ThenBy(r => r.MiddleName)
+                    .Select(r => new List<string> {r.SecondName, r.FirstName, r.MiddleName});
+                outputEnt = String.Concat(data.NameC, " ", data.Bin, "\n", "Контрагенты:");
+                string contrag = "\n";
+                foreach(var agent in agents)
                 {
-                    sb3.AppendLine("\t" + ag[0].ToString() + " " + ag[1].ToString() + " " + ag[2].ToString());
+                    contrag = String.Concat(contrag, "\t", agent[0].ToString(), " ", agent[1].ToString(), " ", agent[2].ToString(), "\n");
                 }
-                Console.WriteLine(sb3);
+                outputEnt = String.Concat(outputEnt, contrag);
+                Console.WriteLine(outputEnt);
             }
         }
 
-        public static void SortPhis(string option)
+        public static void SortPhis()
         {
             file = new FileManager();
-            var resullt = file.GetPhis();
-            var fam = resullt.Select(c => new Dictionary<string, string> { { "SecondName", c.SecondName }, { "Name", c.Name }, { "MiddleName", c.MiddleName } }).OrderBy(c => c[option]);
-            StringBuilder sb;
-            foreach (var p in fam)
+            var personData = file.GetPhis().OrderBy(c => c.SecondName).ThenBy(c => c.FirstName).ThenBy(c => c.MiddleName);
+            var personOutput = "";
+            foreach (var pd in personData)
             {
-                sb = new StringBuilder(p["SecondName"] + " " + p["Name"] + " " + p["MiddleName"]);
-                Console.WriteLine(sb.ToString());
+                personOutput = String.Concat(personOutput, pd.SecondName," ",pd.FirstName," ",pd.MiddleName, "\n");
             }
+            Console.WriteLine(personOutput);
         }
     }
 }
