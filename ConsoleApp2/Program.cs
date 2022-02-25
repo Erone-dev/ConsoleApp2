@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -155,19 +154,12 @@ namespace ConsoleApp2
             string entityRecord = JsonConvert.SerializeObject(ent);
             File.WriteAllText(FileManager.entity, entityRecord);
 
-
-
-
             //Сортировка ФИО
 
             SortPhis();
-
             Console.WriteLine("#\n#\n#\n");
 
-
             //Компании
-
-
 
             //var companyData = file.GetYur()
             //    .Select(e => new Dictionary<string, dynamic> { { "NameC", e.CorpName }, { "bin", e.Biin }, { "id", e.Id } })
@@ -183,7 +175,6 @@ namespace ConsoleApp2
                 .Count()})
                 .OrderByDescending(x => x.agentsCount)
                 .Take(5);
-
 
             string outputEnt;
             foreach (var data in companyData)

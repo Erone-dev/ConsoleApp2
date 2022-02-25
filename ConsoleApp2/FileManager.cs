@@ -11,7 +11,6 @@ namespace ConsoleApp2
         internal static string entity = @"entity.json";
         internal static string individ = @"individual.json";
 
-
         //Получение записей
         public  List<YurFace> GetYur()
         {
