@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
+﻿using ConsoleApp2.Models;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace ConsoleApp2
 {
@@ -11,6 +12,7 @@ namespace ConsoleApp2
         internal static FileManager file;
         static void Main(string[] args)
         {
+            file = new FileManager();
 
             List<PhisicalFace> phis = new List<PhisicalFace>()
             {
@@ -103,11 +105,10 @@ namespace ConsoleApp2
                     CompanyId = 4
                 }
             };
-
             string phisRecor = JsonConvert.SerializeObject(phis);
-            File.WriteAllText(FileManager.individ, phisRecor);
+            File.WriteAllText(FileManager.GetPhisPath(), phisRecor);
 
-            List<YurFace> ent = new List<YurFace>()
+            List<YurFace> yur = new List<YurFace>()
             {
                 new YurFace
                 {
@@ -140,7 +141,7 @@ namespace ConsoleApp2
                     CreateDate = DateTime.Now.ToString(),
                     AuthorCreate = "Жека",
                     Id = 3
-                },                
+                },
                 new YurFace
                 {
                     CorpName = "TechnoDom",
@@ -151,8 +152,8 @@ namespace ConsoleApp2
                 }
             };
 
-            string entityRecord = JsonConvert.SerializeObject(ent);
-            File.WriteAllText(FileManager.entity, entityRecord);
+            string yurRecord = JsonConvert.SerializeObject(yur);
+            File.WriteAllText(FileManager.GetYurPath(), yurRecord);
 
             //Сортировка ФИО
 
@@ -161,18 +162,16 @@ namespace ConsoleApp2
 
             //Компании
 
-            //var companyData = file.GetYur()
-            //    .Select(e => new Dictionary<string, dynamic> { { "NameC", e.CorpName }, { "bin", e.Biin }, { "id", e.Id } })
-            //    .Take(5)
-            //    .OrderByDescending(e => file.GetPhis()
-            //    .Where(g => g.CompanyId == e["id"])
-            //    .Select(g => new List<long> {g.Id})
-            //    .Count());
-
             var companyData = file.GetYur()
-                .Select(x => new CompanyView() { Id = x.Id, NameC = x.CorpName ,Bin = x.Biin, agentsCount = file.GetPhis()
-                .Where(g => g.CompanyId == x.Id)
-                .Count()})
+                .Select(x => new CompanyView()
+                {
+                    Id = x.Id,
+                    NameC = x.CorpName,
+                    Bin = x.Biin,
+                    agentsCount = file.GetPhis()
+                        .Where(g => g.CompanyId == x.Id)
+                        .Count()
+                })
                 .OrderByDescending(x => x.agentsCount)
                 .Take(5);
 
@@ -183,27 +182,25 @@ namespace ConsoleApp2
                     .Where(r => r.CompanyId == data.Id)
                     .OrderBy(r => r.SecondName)
                     .ThenBy(r => r.FirstName)
-                    .ThenBy(r => r.MiddleName)
-                    .Select(r => new List<string> {r.SecondName, r.FirstName, r.MiddleName});
-                outputEnt = String.Concat(data.NameC, " ", data.Bin, "\n", "Контрагенты:");
+                    .ThenBy(r => r.MiddleName);
+                outputEnt = string.Concat(data.NameC, " ", data.Bin, "\n", "Контрагенты:");
                 string contrag = "\n";
-                foreach(var agent in agents)
+                foreach (var agent in agents)
                 {
-                    contrag = String.Concat(contrag, "\t", agent[0].ToString(), " ", agent[1].ToString(), " ", agent[2].ToString(), "\n");
+                    contrag = $"{contrag} \t {agent.SecondName} {agent.FirstName} {agent.MiddleName} \n";
                 }
-                outputEnt = String.Concat(outputEnt, contrag);
+                outputEnt = string.Concat(outputEnt, contrag);
                 Console.WriteLine(outputEnt);
             }
         }
 
         public static void SortPhis()
         {
-            file = new FileManager();
             var personData = file.GetPhis().OrderBy(c => c.SecondName).ThenBy(c => c.FirstName).ThenBy(c => c.MiddleName);
             var personOutput = "";
             foreach (var pd in personData)
             {
-                personOutput = String.Concat(personOutput, pd.SecondName," ",pd.FirstName," ",pd.MiddleName, "\n");
+                personOutput = string.Concat(personOutput, pd.SecondName, " ", pd.FirstName, " ", pd.MiddleName, "\n");
             }
             Console.WriteLine(personOutput);
         }
